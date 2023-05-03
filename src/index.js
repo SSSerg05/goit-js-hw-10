@@ -1,6 +1,7 @@
 import './css/styles.css';
 import debounce from 'lodash.debounce';
 import notiflix from 'notiflix';
+import fetchCountries from './fetchCountries.js';
 
 const DEBOUNCE_DELAY = 300;
 
@@ -10,7 +11,8 @@ const DEBOUNCE_DELAY = 300;
 // flags.svg - ссылка на изображение флага
 // languages - массив языков
 const param = {
-  url: 'https://restcountries.com/v3.1/all',
+  //url: 'https://restcountries.com/v3.1/all',
+  url: 'https://restcountries.com/v3.1/name/',
   fields: ['name.official', 'capital', 'population', 'flags.svg', 'languages'],
 };
 
@@ -20,15 +22,40 @@ const refs = {
   out: document.querySelector('.country-info'),
 }
 
+refs.input.addEventListener('input', getInput);
 
-// получить данные
-function getCountries() {
-  // Функция getCountries получает из select id города.
-  const cityId = outSelect.value;
-  localStorage.setItem('selectCity', outSelect.selectedIndex);
+//fetchCountries('Poland');
+getCountries('Poland');
 
-  fetch(`${param.url}?fields=${[...param.fields]}`)
-    .then(country => {
-      return country.json();
-    }).then(showCountry);
+function getInput() { 
+
+}
+
+
+//получить данные
+function getCountries(name) {
+  //https://restcountries.com/v3.1/name/deutschland
+  const str = `${param.url}${name}`; ////?fields=${[...param.fields]}`;
+  fetch(str)
+    .then(responce => {
+      return responce.json()
+    }).then(country => { showCountry(country) });
+}
+
+function showCountry([...country]) {
+  console.log(country[0]);
+  console.log(country[0].name.official);
+  console.log(country[0].capital[0]);
+  console.log(country[0].flags.svg);
+  const str = `
+    <li>
+      <span>
+        <svg width="30" height="20">
+          <use href="${country[0].flags.svg}"></use>
+        </svg>
+      </span>
+      ${country[0].name.official}
+    </li>`;
+  
+  refs.list.innerHTML = str;
 }
