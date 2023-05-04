@@ -29,22 +29,31 @@ function getInput() {
   refs.list.innerHTML = "";
 
   let str = refs.input.value.trim();
-  getCountries(str);
+  //getCountries(str) 
+
+  const arrCountries = async () => {
+    const a = await fetchCountries(param, str);
+    showCountry(a);
+  };
+  
+  arrCountries()  
 }
 
 //получить данные
-function getCountries(name) {
-  //https://restcountries.com/v3.1/name/deutschland
-  const str = `${param.url}${name}?status=true&fields=${[...param.fields]}`;
+// function getCountries(name) {
+//   //https://restcountries.com/v3.1/name/deutschland
+//   const str = `${param.url}${name}?status=true&fields=${[...param.fields]}`;
   
-  fetch(str)
-    .then(responce => {
-      return responce.json()
-    }).then(countries => { showCountry(countries) });
-}
+//   fetch(str)
+//     .then(responce => {
+//       return responce.json()
+//     }).then(countries => { showCountry(countries) });
+// }
 
 
 function showCountry(countries) {
+  console.log(countries);
+  
   if (countries.status === 404) {
     Notify.failure('Oops, there is no country with that name.'); 
     return
