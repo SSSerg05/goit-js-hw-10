@@ -12,7 +12,6 @@ const DEBOUNCE_DELAY = 300;
 // languages - массив языков
 
 const param = {
-  //url: 'https://restcountries.com/v3.1/all',
   url: 'https://restcountries.com/v3.1/name/',
   fields: ['name', 'capital', 'population', 'flags', 'languages'],
 };
