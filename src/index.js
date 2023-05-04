@@ -41,33 +41,33 @@ function getCountries(name) {
   fetch(str)
     .then(responce => {
       return responce.json()
-    }).then(country => { showCountry(country) });
+    }).then(countries => { showCountry(countries) });
 }
 
 
-function showCountry(country) {
-  if (country.status === 404) {
+function showCountry(countries) {
+  if (countries.status === 404) {
     Notify.failure('Oops, there is no country with that name.'); 
     return
   }
 
-  if (country.length > 10) {
+  if (countries.length > 10) {
     Notify.info('Too many matches found. Please enter a more specific name.');
-  } else if (country.length === 1) {
-    showOneCountry(country)
+  } else if (countries.length === 1) {
+    showOneCountry(countries)
   } else { 
-    showListCountry(country)
+    showListCountry(countries)
   }
 
   return
 }
 
 
-function showListCountry(country) { 
+function showListCountry(countries) { 
  
   let str = ''; 
  
-  for (item of country) {
+  for (item of countries) {
     str += `
       <li
         data-name="${item.name.official}" 
