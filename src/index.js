@@ -10,6 +10,7 @@ const DEBOUNCE_DELAY = 300;
 // population - население
 // flags.svg - ссылка на изображение флага
 // languages - массив языков
+
 const param = {
   //url: 'https://restcountries.com/v3.1/all',
   url: 'https://restcountries.com/v3.1/name/',
@@ -22,20 +23,13 @@ const refs = {
   out: document.querySelector('.country-info'),
 }
 
-refs.input.addEventListener('input', debounce(getInput, 1000));
-//refs.list.addEventListener('click', showCountry);
-
+refs.input.addEventListener('input', debounce(getInput, DEBOUNCE_DELAY));
 
 function getInput() { 
   refs.out.innerHTML = "";
   refs.list.innerHTML = "";
 
   let str = refs.input.value.trim();
-  if (str.length < 2) {
-    Notify.info('Too many matches found. Please enter a more specific name.');
-    return
-  }
-  
   getCountries(str);
 }
 
@@ -43,6 +37,7 @@ function getInput() {
 function getCountries(name) {
   //https://restcountries.com/v3.1/name/deutschland
   const str = `${param.url}${name}?status=true&fields=${[...param.fields]}`;
+  
   fetch(str)
     .then(responce => {
       return responce.json()
@@ -52,42 +47,49 @@ function getCountries(name) {
 
 function showCountry(country) {
   if (country.status === 404) {
-    Notify.failure('Not found.'); 
+    Notify.failure('Oops, there is no country with that name.'); 
     return
   }
 
-  console.log(country);
-
-  if (country.length === 1) {
+  if (country.length > 10) {
+    Notify.info('Too many matches found. Please enter a more specific name.');
+  } else if (country.length === 1) {
     showOneCountry(country)
   } else { 
     showListCountry(country)
   }
+
+  return
 }
 
+
 function showListCountry(country) { 
+ 
   let str = ''; 
+ 
   for (item of country) {
     str += `
-    <li
-      data-name="${item.name.official}" 
-      data-capital="${item.capital}" 
-      data-population="${item.population}" 
-      data-flag="${item.flags.svg}"
-      data-languages="${item.languages}">
-        <span style="vertical-align: text-top;">
-          <img src="${item.flags.svg}" width="30" height="20">
-        </span>
-        ${item.name.common}
-    </li>`;
+      <li
+        data-name="${item.name.official}" 
+        data-capital="${item.capital}" 
+        data-population="${item.population}" 
+        data-flag="${item.flags.svg}"
+        data-languages="${item.languages}">
+          <span style="vertical-align: text-top;">
+            <img src="${item.flags.svg}" width="30" height="20">
+          </span>
+          ${item.name.common}
+      </li>
+    `;
   }
   
   refs.list.innerHTML = str;
 }
 
 function showOneCountry(country) {
-  console.log(country[0]);
-  const {name, capital, population, flags, languages} = country[0];
+ 
+  const { name, capital, population, flags, languages } = country[0];
+ 
   let str = `
     <h3
       <span style="vertical-align: sub;">
@@ -97,7 +99,7 @@ function showOneCountry(country) {
     </h3>
     <p>Capital: ${capital}</p>
     <p>Population: ${population}</p>
-    <p>Languages: ${[ ...Object.values(languages) ]}</p>
+    <p>Languages: ${Object.values(languages).join(', ')}</p>
     `;
 
   refs.out.innerHTML = str;
