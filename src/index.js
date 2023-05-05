@@ -56,8 +56,8 @@ function showListCountry(countries) {
  
   let str = ''; 
   console.log(countries);
-  
-  for (item of countries) {
+
+  for (const item of countries) {
     str += `
       <li
         data-name="${item.name.official}" 
