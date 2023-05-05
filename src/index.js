@@ -55,7 +55,8 @@ function showCountry(countries) {
 function showListCountry(countries) { 
  
   let str = ''; 
- 
+  console.log(countries);
+  
   for (item of countries) {
     str += `
       <li
