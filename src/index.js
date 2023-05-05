@@ -1,7 +1,7 @@
 import './css/styles.css';
 import debounce from 'lodash.debounce';
 import { Notify } from 'notiflix';
-import fetchCountries from './fetchCountries.js';
+import fetchApi from './fetchCountries.js';
 
 const DEBOUNCE_DELAY = 300;
 
@@ -24,35 +24,16 @@ const refs = {
 
 refs.input.addEventListener('input', debounce(getInput, DEBOUNCE_DELAY));
 
-function getInput() { 
+function getInput() {
   refs.out.innerHTML = "";
   refs.list.innerHTML = "";
 
   let str = refs.input.value.trim();
-  //getCountries(str) 
 
-  const arrCountries = async () => {
-    const a = await fetchCountries(param, str);
-    showCountry(a);
-  };
-  
-  arrCountries()  
+  fetchApi.fetchCountries(param, str).then(countries => { showCountry(countries) });
 }
 
-//получить данные
-// function getCountries(name) {
-//   //https://restcountries.com/v3.1/name/deutschland
-//   const str = `${param.url}${name}?status=true&fields=${[...param.fields]}`;
-  
-//   fetch(str)
-//     .then(responce => {
-//       return responce.json()
-//     }).then(countries => { showCountry(countries) });
-// }
-
-
 function showCountry(countries) {
-  console.log(countries);
   
   if (countries.status === 404) {
     Notify.failure('Oops, there is no country with that name.'); 
