@@ -11,10 +11,7 @@ const DEBOUNCE_DELAY = 300;
 // flags.svg - ссылка на изображение флага
 // languages - массив языков
 
-const param = {
-  url: 'https://restcountries.com/v3.1/name/',
-  fields: ['name', 'capital', 'population', 'flags', 'languages'],
-};
+
 
 const refs = {
   input: document.querySelector('#search-box'),
@@ -30,7 +27,7 @@ function getInput() {
 
   let str = refs.input.value.trim();
 
-  fetchApi.fetchCountries(param, str).then(countries => { showCountry(countries) });
+  fetchApi.fetchCountries(str).then(countries => { showCountry(countries) });
 }
 
 function showCountry(countries) {

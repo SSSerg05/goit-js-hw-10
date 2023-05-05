@@ -1,4 +1,9 @@
-function fetchCountries(param, name) {
+const param = {
+  url: 'https://restcountries.com/v3.1/name/',
+  fields: ['name', 'capital', 'population', 'flags', 'languages'],
+};
+
+function fetchCountries(name) {
   //https://restcountries.com/v3.1/name/deutschland
   const str = `${param.url}${name}?status=true&fields=${[...param.fields]}`;
   
