@@ -27,7 +27,9 @@ function getInput() {
 
   let str = refs.input.value.trim();
 
-  fetchApi.fetchCountries(str).then(countries => { showCountry(countries) });
+  fetchApi.fetchCountries(str)
+    .then(countries => { showCountry(countries) })
+    .catch(Notify.failure('Oops, no fetch contries.') );
 }
 
 function showCountry(countries) {
