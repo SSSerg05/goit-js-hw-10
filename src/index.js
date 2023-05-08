@@ -30,30 +30,16 @@ function getInput() {
   fetchApi.fetchCountries(str)
     .then(showCountry)
     .catch(err => {
-      console.log('err', err);
-      if (err.status === 404) {
-        Notify.failure('Oops, there is no country with that name.');  
-      } else {
-        onError(err)
-      }
+       console.log(err.message);
     });
-}
-
-function onError(obj) { 
-  console.log(obj, obj.status);
-  // if (obj.status === 404) {
-  //   Notify.failure('Oops, there is no country with that name.');  
-  // } else { 
-    Notify.failure(`Oops, ${obj.message}`);
-  // }
 }
 
 
 function showCountry(countries) {
-  // if (countries.status === 404) {
-  //   Notify.failure('Oops, there is no country with that name.'); 
-  //   return
-  // }
+  if (countries.status === 404) {
+    Notify.failure('Oops, there is no country with that name.'); 
+    return
+  }
 
   if (countries.length > 10) {
     Notify.info('Too many matches found. Please enter a more specific name.');

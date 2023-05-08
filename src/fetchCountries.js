@@ -11,7 +11,7 @@ function fetchCountries(name) {
     .then(responce => {
       return responce.json()
     })
-    .catch(console.log.bind(console));
+    .catch(err => { console.log(err.message) });
 }
 
 export default { fetchCountries }
